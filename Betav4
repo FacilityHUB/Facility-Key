@@ -1,0 +1,154 @@
+-- Script de l'interface utilisateur
+local function createInterface()
+	-- Fonction pour appliquer UICorner
+	local function applyUICorner(element, cornerRadius)
+		local corner = Instance.new("UICorner")
+		corner.CornerRadius = UDim.new(0, cornerRadius)
+		corner.Parent = element
+	end
+
+	-- Fonction pour appliquer UIStroke
+	local function applyUIStroke(element)
+		local stroke = Instance.new("UIStroke")
+		stroke.Color = Color3.fromRGB(72, 72, 72)
+		stroke.Thickness = 1
+		stroke.Transparency = 0
+		stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+		stroke.Parent = element
+	end
+
+	-- Fonction pour rendre un élément draggable
+	local function makeDraggable(frame)
+		local dragging = false
+		local dragStart = nil
+		local startPos = nil
+
+		frame.InputBegan:Connect(function(input)
+			if input.UserInputType == Enum.UserInputType.MouseButton1 then
+				dragging = true
+				dragStart = input.Position
+				startPos = frame.Position
+			end
+		end)
+
+		frame.InputChanged:Connect(function(input)
+			if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+				local delta = input.Position - dragStart
+				frame.Position =
+					UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+			end
+		end)
+
+		frame.InputEnded:Connect(function(input)
+			if input.UserInputType == Enum.UserInputType.MouseButton1 then
+				dragging = false
+			end
+		end)
+	end
+
+	-- Création de l'interface utilisateur
+	local ScreenGui = Instance.new("ScreenGui")
+	local Frame = Instance.new("Frame")
+
+	ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+	ScreenGui.Name = "Facility"
+
+	Frame.Parent = ScreenGui
+	Frame.Name = "Container"
+	Frame.Size = UDim2.new(0, 479, 0, 235)
+	Frame.Position = UDim2.new(0.347, 0, 0.334, 0)
+	Frame.BackgroundColor3 = Color3.fromRGB(24, 24, 24)
+	Frame.BackgroundTransparency = 0.1
+	applyUICorner(Frame, 15)
+	applyUIStroke(Frame)
+
+	local TitleLabel = Instance.new("TextLabel")
+	TitleLabel.Name = "Title"
+	TitleLabel.Text = "Key System"
+	TitleLabel.Size = UDim2.new(0, 479, 0, 30)
+	TitleLabel.TextColor3 = Color3.fromRGB(150, 150, 150)
+	TitleLabel.BackgroundTransparency = 1
+	TitleLabel.Font = Enum.Font.SourceSansBold
+	TitleLabel.TextScaled = true
+	TitleLabel.Position = UDim2.new(0, 0, 0.043, 0)
+	TitleLabel.Parent = Frame
+
+	local ErrorMessage = Instance.new("TextLabel")
+	ErrorMessage.Name = "ErrorMessage"
+	ErrorMessage.Text = ""
+	ErrorMessage.Size = UDim2.new(0, 349, 0, 50)
+	ErrorMessage.TextColor3 = Color3.fromRGB(100, 100, 100)
+	ErrorMessage.BackgroundTransparency = 1
+	ErrorMessage.Font = Enum.Font.SourceSans
+	ErrorMessage.TextSize = 24
+	ErrorMessage.Position = UDim2.new(0.136, 0, 0.745, 0)
+	ErrorMessage.Parent = Frame
+
+	local FrameIdkey = Instance.new("Frame")
+	FrameIdkey.Name = "Id+Key"
+	FrameIdkey.Size = UDim2.new(0, 350, 0, 32)
+	FrameIdkey.Position = UDim2.new(0.136, 0, 0.315, 0)
+	FrameIdkey.BackgroundColor3 = Color3.fromRGB(39, 39, 39)
+	FrameIdkey.Parent = Frame
+	applyUICorner(FrameIdkey, 15)
+	applyUIStroke(FrameIdkey)
+
+	local EnterKey = Instance.new("TextBox")
+	EnterKey.Name = "EnterKey"
+	EnterKey.Text = ""
+	EnterKey.Size = UDim2.new(0, 350, 0, 31)
+	EnterKey.Position = UDim2.new(0, 0, 0, 0)
+	EnterKey.BackgroundTransparency = 1
+	EnterKey.TextColor3 = Color3.fromRGB(99, 99, 99)
+	EnterKey.Parent = FrameIdkey
+
+	local ValidateKey = Instance.new("Frame")
+	ValidateKey.Name = "FValidate"
+	ValidateKey.Size = UDim2.new(0, 157, 0, 33)
+	ValidateKey.Position = UDim2.new(0.538, 0, 0.553, 0)
+	ValidateKey.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+	ValidateKey.Parent = Frame
+	applyUICorner(ValidateKey, 10)
+	applyUIStroke(ValidateKey)
+
+	local ValidateBTN = Instance.new("TextButton")
+	ValidateBTN.Name = "ValidateKey"
+	ValidateBTN.Text = "Validate Key"
+	ValidateBTN.Size = UDim2.new(0, 157, 0, 33)
+	ValidateBTN.Position = UDim2.new(0, 0, 0, 0)
+	ValidateBTN.TextColor3 = Color3.fromRGB(99, 99, 99)
+	ValidateBTN.BackgroundTransparency = 1
+	ValidateBTN.Parent = ValidateKey
+
+	local GetKey = Instance.new("Frame")
+	GetKey.Name = "FKey"
+	GetKey.Size = UDim2.new(0, 157, 0, 33)
+	GetKey.Position = UDim2.new(0.136, 0, 0.553, 0)
+	GetKey.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+	GetKey.Parent = Frame
+	applyUICorner(GetKey, 10)
+	applyUIStroke(GetKey)
+
+	local GetKBTN = Instance.new("TextButton")
+	GetKBTN.Name = "GetKey"
+	GetKBTN.Text = "Get Key"
+	GetKBTN.Size = UDim2.new(0, 157, 0, 33)
+	GetKBTN.Position = UDim2.new(0, 0, 0, 0)
+	GetKBTN.TextColor3 = Color3.fromRGB(99, 99, 99)
+	GetKBTN.BackgroundTransparency = 1
+	GetKBTN.Parent = GetKey
+
+	-- Rendre la fenêtre draggable
+	makeDraggable(Frame)
+
+	return {
+		ScreenGui = ScreenGui,
+		Frame = Frame,
+		EnterKey = EnterKey,
+		ValidateBTN = ValidateBTN,
+		GetKBTN = GetKBTN,
+		ErrorMessage = ErrorMessage
+	}
+end
+
+return createInterface
