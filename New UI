@@ -15,6 +15,47 @@ local function applyUIStroke(element)
 	stroke.Parent = element
 end
 
+-- Fonction pour lire une clé sauvegardée
+local function loadSavedKey()
+	local folderPath = "FacilityKey"
+	local filePath = folderPath .. "/Key.txt"
+	
+	if isfile(filePath) then
+		return readfile(filePath)
+	else
+		return nil
+	end
+end
+
+-- Fonction pour sauvegarder une clé
+local function saveKey(key)
+	local folderPath = "FacilityKey"
+	local filePath = folderPath .. "/Key.txt"
+	
+	if not isfolder(folderPath) then
+		makefolder(folderPath)
+	end
+	
+	writefile(filePath, key)
+end
+
+-- Charger FacilityLibrary
+local FacilityLibrary = loadstring(
+	game:HttpGet("https://raw.githubusercontent.com/FacilityHUB/Facility-Key/refs/heads/main/Beta/V1.0.0.0c")
+)()
+
+-- Vérifier si une clé est déjà sauvegardée et la valider
+local savedKey = loadSavedKey()
+if savedKey then
+	local response = FacilityLibrary.validateDefaultKey(savedKey)
+	if response == true then
+		print("Clé sauvegardée valide : " .. savedKey)
+	else
+		print("Clé sauvegardée invalide, veuillez entrer une nouvelle clé.")
+		savedKey = nil
+	end
+end
+
 -- Création de l'interface
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "FacilityKey"
@@ -60,7 +101,7 @@ applyUIStroke(EnterBox)
 
 local EnterKey = Instance.new("TextBox")
 EnterKey.Name = "EnterKey"
-EnterKey.Text = "Enter Key"
+EnterKey.Text = savedKey or "Enter Key"
 EnterKey.Size = UDim2.new(0, 349, 0, 31)
 EnterKey.Position = UDim2.new(0.003, 0, 0, 0)
 EnterKey.BackgroundTransparency = 1
@@ -92,11 +133,6 @@ Fermerbtn.MouseButton1Click:Connect(function()
 	screenGui:Destroy()
 end)
 
--- Charger FacilityLibrary
-local FacilityLibrary = loadstring(
-	game:HttpGet("https://raw.githubusercontent.com/FacilityHUB/Facility-Key/refs/heads/main/Beta/V1.0.0.0c")
-)()
-
 -- Ajouter un événement au bouton ValidateBTN
 ValidateBTN.MouseButton1Click:Connect(function()
 	local enteredKey = EnterKey.Text -- Récupérer la clé entrée dans EnterKey
@@ -109,6 +145,7 @@ ValidateBTN.MouseButton1Click:Connect(function()
 	local response = FacilityLibrary.validateDefaultKey(enteredKey)
 	if response == true then
 		print("Clé valide : " .. enteredKey)
+		saveKey(enteredKey) -- Sauvegarder la clé validée
 	else
 		print("Clé invalide : " .. enteredKey)
 	end
