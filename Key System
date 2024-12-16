@@ -219,4 +219,5 @@ return {
 	ValidateBTN = ValidateBTN,
 	EnterKey = EnterKey,
 	FacilityLibrary = FacilityLibrary,
+	screenGui = screenGui,
 }
