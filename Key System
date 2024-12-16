@@ -39,24 +39,40 @@ local FacilityLibrary = loadstring(
 	game:HttpGet("https://raw.githubusercontent.com/FacilityHUB/Facility-Key/refs/heads/main/Beta/V1.0.0.0c")
 )()
 
+-- Fonction centralisée pour valider et sauvegarder une clé
+local function validateAndSaveKey(key)
+	if key == "" or key == "Enter Key" then
+		warn("Please enter a valid key.")
+		return false
+	end
+
+	local response = FacilityLibrary.validateDefaultKey(key)
+	if response == true then
+		game:GetService("StarterGui"):SetCore("SendNotification", {
+			Title = "Facility Key",
+			Text = "Key Valide",
+			Icon = "rbxassetid://1234567890",
+		})
+		saveKey(key)
+		return true
+	else
+		game:GetService("StarterGui"):SetCore("SendNotification", {
+			Title = "Facility Key",
+			Text = "Key Invalid",
+			Icon = "rbxassetid://1234567890",
+		})
+		return false
+	end
+end
+
+-- Validation automatique lors du chargement
 local savedKey = loadSavedKey()
 if savedKey then
-	local response = FacilityLibrary.validateDefaultKey(savedKey)
-	if response == true then
-		print("Saved key Valid : " .. savedKey)
-		game:GetService("StarterGui"):SetCore("SendNotification", {
-			Title = "Facility Key",
-			Text = "Saved key Valid : " .. savedKey,
-			Icon = "rbxassetid://1234567890",
-		})
+	local isValid = validateAndSaveKey(savedKey)
+	if isValid then
+		print("Key loaded and validated automatically: " .. savedKey)
 	else
-		print("Invalid saved key, please enter a new key.")
-		game:GetService("StarterGui"):SetCore("SendNotification", {
-			Title = "Facility Key",
-			Text = "Invalid saved key, please enter a new key .",
-			Icon = "rbxassetid://1234567890",
-		})
-		savedKey = nil
+		print("Saved key is invalid.")
 	end
 end
 
@@ -125,44 +141,6 @@ EnterKey.TextColor3 = Color3.fromRGB(170, 170, 170)
 EnterKey.TextSize = 12
 EnterKey.Parent = EnterBox
 
-local Discord = Instance.new("Frame")
-Discord.Name = "Frame"
-Discord.Size = UDim2.new(0, 101, 0, 33)
-Discord.Position = UDim2.new(0.66, 0, 0.464, 0)
-Discord.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
-Discord.Parent = Container
-applyUICorner(Discord, 8)
-applyUIStroke(Discord)
-
-local DiscordBTN = Instance.new("TextButton")
-DiscordBTN.Name = "Frame"
-DiscordBTN.Text = "Discord"
-DiscordBTN.Size = UDim2.new(0, 100, 0, 33)
-DiscordBTN.Position = UDim2.new(0.02, 0, 0, 0)
-DiscordBTN.BackgroundTransparency = 1
-DiscordBTN.TextColor3 = Color3.fromRGB(99, 99, 99)
-DiscordBTN.TextSize = 12
-DiscordBTN.Parent = Discord
-
-local GetKey = Instance.new("Frame")
-GetKey.Name = "Frame"
-GetKey.Size = UDim2.new(0, 101, 0, 33)
-GetKey.Position = UDim2.new(0.136, 0, 0.464, 0)
-GetKey.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
-GetKey.Parent = Container
-applyUICorner(GetKey, 8)
-applyUIStroke(GetKey)
-
-local GetKeyBTN = Instance.new("TextButton")
-GetKeyBTN.Name = "Frame"
-GetKeyBTN.Text = "Get Key"
-GetKeyBTN.Size = UDim2.new(0, 100, 0, 33)
-GetKeyBTN.Position = UDim2.new(0.01, 0, 0, 0)
-GetKeyBTN.BackgroundTransparency = 1
-GetKeyBTN.TextColor3 = Color3.fromRGB(99, 99, 99)
-GetKeyBTN.TextSize = 12
-GetKeyBTN.Parent = GetKey
-
 local Validate = Instance.new("Frame")
 Validate.Name = "Validate"
 Validate.Size = UDim2.new(0, 101, 0, 33)
@@ -182,54 +160,12 @@ ValidateBTN.TextColor3 = Color3.fromRGB(99, 99, 99)
 ValidateBTN.TextSize = 12
 ValidateBTN.Parent = Validate
 
-GetKeyBTN.MouseButton1Click:Connect(function()
-	setclipboard("facilitykey.org")
-	game:GetService("StarterGui"):SetCore("SendNotification", {
-		Title = "Facility Key",
-		Text = "Key Link Copied",
-		Icon = "rbxassetid://1234567890",
-	})
-end)
-
-DiscordBTN.MouseButton1Click:Connect(function()
-	setclipboard("https://discord.gg/jTuXv2Kcsn")
-	game:GetService("StarterGui"):SetCore("SendNotification", {
-		Title = "Facility Key",
-		Text = "Discord Link Copied",
-		Icon = "rbxassetid://1234567890",
-	})
-end)
-
-Fermerbtn.MouseButton1Click:Connect(function()
-	screenGui:Destroy()
-end)
-
+-- Appel depuis le bouton ValidateBTN
 ValidateBTN.MouseButton1Click:Connect(function()
 	local enteredKey = EnterKey.Text
-	if enteredKey == "" or enteredKey == "Enter Key" then
-		warn("Please enter a valid key.")
-		return
-	end
-
-	local response = FacilityLibrary.validateDefaultKey(enteredKey)
-	if response == true then
-		game:GetService("StarterGui"):SetCore("SendNotification", {
-			Title = "Facility Key",
-			Text = "Key Valide",
-			Icon = "rbxassetid://1234567890",
-		})
-		saveKey(enteredKey)
-		screenGui:Destroy()
-	else
-		game:GetService("StarterGui"):SetCore("SendNotification", {
-			Title = "Facility Key",
-			Text = "Key Invalid",
-			Icon = "rbxassetid://1234567890",
-		})
-	end
+	validateAndSaveKey(enteredKey)
 end)
 
--- Ajout de la fonctionnalité Drag
 local dragging = false
 local dragStart = nil
 local startPos = nil
