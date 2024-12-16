@@ -68,45 +68,6 @@ EnterKey.TextColor3 = Color3.fromRGB(170, 170, 170)
 EnterKey.TextSize = 12
 EnterKey.Parent = EnterBox
 
--- Boutons
-local Discord = Instance.new("Frame")
-Discord.Name = "Discord"
-Discord.Size = UDim2.new(0, 101, 0, 33)
-Discord.Position = UDim2.new(0.66, 0, 0.464, 0)
-Discord.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
-Discord.Parent = Container
-applyUICorner(Discord, 8)
-applyUIStroke(Discord)
-
-local DiscordBTN = Instance.new("TextButton")
-DiscordBTN.Name = "DiscordBTN"
-DiscordBTN.Text = "Discord"
-DiscordBTN.Size = UDim2.new(0, 100, 0, 33)
-DiscordBTN.Position = UDim2.new(0.02, 0, 0, 0)
-DiscordBTN.BackgroundTransparency = 1
-DiscordBTN.TextColor3 = Color3.fromRGB(99, 99, 99)
-DiscordBTN.TextSize = 12
-DiscordBTN.Parent = Discord
-
-local GetKey = Instance.new("Frame")
-GetKey.Name = "GetKey"
-GetKey.Size = UDim2.new(0, 101, 0, 33)
-GetKey.Position = UDim2.new(0.136, 0, 0.464, 0)
-GetKey.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
-GetKey.Parent = Container
-applyUICorner(GetKey, 8)
-applyUIStroke(GetKey)
-
-local GetKeyBTN = Instance.new("TextButton")
-GetKeyBTN.Name = "GetKeyBTN"
-GetKeyBTN.Text = "Get Key"
-GetKeyBTN.Size = UDim2.new(0, 100, 0, 33)
-GetKeyBTN.Position = UDim2.new(0.01, 0, 0, 0)
-GetKeyBTN.BackgroundTransparency = 1
-GetKeyBTN.TextColor3 = Color3.fromRGB(99, 99, 99)
-GetKeyBTN.TextSize = 12
-GetKeyBTN.Parent = GetKey
-
 local Validate = Instance.new("Frame")
 Validate.Name = "Validate"
 Validate.Size = UDim2.new(0, 101, 0, 33)
@@ -131,11 +92,31 @@ Fermerbtn.MouseButton1Click:Connect(function()
 	screenGui:Destroy()
 end)
 
+-- Charger FacilityLibrary
+local FacilityLibrary = loadstring(
+	game:HttpGet("https://raw.githubusercontent.com/FacilityHUB/Facility-Key/refs/heads/main/Beta/V1.0.0.0c")
+)()
+
+-- Ajouter un événement au bouton ValidateBTN
+ValidateBTN.MouseButton1Click:Connect(function()
+	local enteredKey = EnterKey.Text -- Récupérer la clé entrée dans EnterKey
+	if enteredKey == "" or enteredKey == "Enter Key" then
+		warn("Veuillez entrer une clé valide.")
+		return
+	end
+
+	-- Valider la clé
+	local response = FacilityLibrary.validateDefaultKey(enteredKey)
+	if response == true then
+		print("Clé valide : " .. enteredKey)
+	else
+		print("Clé invalide : " .. enteredKey)
+	end
+end)
+
 -- Retourner les éléments dans une table
 return {
 	ValidateBTN = ValidateBTN,
-	GetBTN = GetKeyBTN,
 	EnterKey = EnterKey,
-	ErrorMessage = nil, -- Remplace par l'élément approprié si nécessaire
-	FacilityLibrary = nil -- Remplace par ton module de bibliothèque si nécessaire
+	FacilityLibrary = FacilityLibrary
 }
