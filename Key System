@@ -175,7 +175,6 @@ ValidateBTN.MouseButton1Click:Connect(function()
 			Text = "Key Valide",
 			Icon = "rbxassetid://1234567890",
 		})
-		saveKey(enteredKey)
 		screenGui:Destroy()
 	else
 		game:GetService("StarterGui"):SetCore("SendNotification", {
