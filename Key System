@@ -1,11 +1,13 @@
--- Fonction pour appliquer un UICorner
+local FacilityLibrary = loadstring(
+	game:HttpGet("https://raw.githubusercontent.com/FacilityHUB/Facility-Key/refs/heads/main/Beta/V1.0.0.0c")
+)()
+
 local function applyUICorner(element, cornerRadius)
 	local corner = Instance.new("UICorner")
 	corner.CornerRadius = UDim.new(0, cornerRadius)
 	corner.Parent = element
 end
 
--- Fonction pour appliquer un UIStroke
 local function applyUIStroke(element)
 	local stroke = Instance.new("UIStroke")
 	stroke.Color = Color3.fromRGB(72, 72, 72)
@@ -15,7 +17,6 @@ local function applyUIStroke(element)
 	stroke.Parent = element
 end
 
--- Création de l'interface
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "FacilityKey"
 screenGui.Parent = game:GetService("CoreGui")
@@ -27,6 +28,7 @@ Container.Position = UDim2.new(0.491, 0, 0.322, 0)
 Container.BackgroundColor3 = Color3.fromRGB(24, 24, 24)
 Container.Parent = screenGui
 applyUICorner(Container, 8)
+applyUIStroke(Container)
 
 local Titre = Instance.new("TextLabel")
 Titre.Size = UDim2.new(0, 479, 0, 30)
@@ -49,6 +51,18 @@ Fermerbtn.TextScaled = true
 Fermerbtn.Font = Enum.Font.SourceSansBold
 Fermerbtn.Parent = Container
 
+local Preventions = Instance.new("TextLabel")
+Preventions.Position = UDim2.new(0.129, 0, 0.691, 0)
+Preventions.Size = UDim2.new(0, 349, 0, 50)
+Preventions.Name = "Frame"
+Preventions.BackgroundTransparency = 1
+Preventions.TextColor3 = Color3.fromRGB(100, 100, 100)
+Preventions.Text =
+	'To obtain your key, click on "Get Key". Then, enter your key in the "TextBox". For assistance, join the Discord by clicking on "Discord".'
+Preventions.TextScaled = true
+Preventions.TextWrapped = true
+Preventions.Parent = Container
+
 local EnterBox = Instance.new("Frame")
 EnterBox.Name = "EnterBox"
 EnterBox.Size = UDim2.new(0, 350, 0, 32)
@@ -60,7 +74,7 @@ applyUIStroke(EnterBox)
 
 local EnterKey = Instance.new("TextBox")
 EnterKey.Name = "EnterKey"
-EnterKey.Text = "Enter Key"
+EnterKey.Text = savedKey or "Enter Key"
 EnterKey.Size = UDim2.new(0, 349, 0, 31)
 EnterKey.Position = UDim2.new(0.003, 0, 0, 0)
 EnterKey.BackgroundTransparency = 1
@@ -147,27 +161,63 @@ Fermerbtn.MouseButton1Click:Connect(function()
 	screenGui:Destroy()
 end)
 
-local FacilityLibrary = loadstring(
-	game:HttpGet("https://raw.githubusercontent.com/FacilityHUB/Facility-Key/refs/heads/main/Beta/V1.0.0.0c")
-)()
-
 ValidateBTN.MouseButton1Click:Connect(function()
-	local enteredKey = EnterKey.Text 
+	local enteredKey = EnterKey.Text
 	if enteredKey == "" or enteredKey == "Enter Key" then
-		warn("Veuillez entrer une clé valide.")
+		warn("Please enter a valid key.")
 		return
 	end
 
 	local response = FacilityLibrary.validateDefaultKey(enteredKey)
 	if response == true then
-		print("Clé valide : " .. enteredKey)
+		game:GetService("StarterGui"):SetCore("SendNotification", {
+			Title = "Facility Key",
+			Text = "Key Valide",
+			Icon = "rbxassetid://1234567890",
+		})
+		saveKey(enteredKey)
+		screenGui:Destroy()
 	else
-		print("Clé invalide : " .. enteredKey)
+		game:GetService("StarterGui"):SetCore("SendNotification", {
+			Title = "Facility Key",
+			Text = "Key Invalid",
+			Icon = "rbxassetid://1234567890",
+		})
 	end
 end)
+
+local dragging = false
+local dragStart = nil
+local startPos = nil
+
+local function makeDraggable(Container)
+	Container.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			dragging = true
+			dragStart = input.Position
+			startPos = Container.Position
+		end
+	end)
+
+	Container.InputChanged:Connect(function(input)
+		if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+			local delta = input.Position - dragStart
+			Container.Position =
+				UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+		end
+	end)
+
+	Container.InputEnded:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			dragging = false
+		end
+	end)
+end
+
+makeDraggable(Container)
 
 return {
 	ValidateBTN = ValidateBTN,
 	EnterKey = EnterKey,
-	FacilityLibrary = FacilityLibrary
+	FacilityLibrary = FacilityLibrary,
 }
