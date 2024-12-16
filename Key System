@@ -171,5 +171,3 @@ return {
 	EnterKey = EnterKey,
 	FacilityLibrary = FacilityLibrary
 }
-
-print("coucou")
