@@ -1,0 +1,141 @@
+-- Fonction pour appliquer un UICorner
+local function applyUICorner(element, cornerRadius)
+	local corner = Instance.new("UICorner")
+	corner.CornerRadius = UDim.new(0, cornerRadius)
+	corner.Parent = element
+end
+
+-- Fonction pour appliquer un UIStroke
+local function applyUIStroke(element)
+	local stroke = Instance.new("UIStroke")
+	stroke.Color = Color3.fromRGB(72, 72, 72)
+	stroke.Thickness = 1
+	stroke.Transparency = 0
+	stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	stroke.Parent = element
+end
+
+-- Création de l'interface
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "FacilityKey"
+screenGui.Parent = game:GetService("CoreGui")
+
+local Container = Instance.new("Frame")
+Container.Name = "Container"
+Container.Size = UDim2.new(0, 471, 0.243, 0)
+Container.Position = UDim2.new(0.491, 0, 0.322, 0)
+Container.BackgroundColor3 = Color3.fromRGB(24, 24, 24)
+Container.Parent = screenGui
+applyUICorner(Container, 8)
+
+local Titre = Instance.new("TextLabel")
+Titre.Size = UDim2.new(0, 479, 0, 30)
+Titre.Position = UDim2.new(0, 0, 0.038, 0)
+Titre.Text = "Facility Key"
+Titre.TextColor3 = Color3.fromRGB(93, 93, 93)
+Titre.BackgroundTransparency = 1
+Titre.Font = Enum.Font.SourceSansBold
+Titre.TextScaled = true
+Titre.Parent = Container
+
+local Fermerbtn = Instance.new("TextButton")
+Fermerbtn.Name = "Fermerbtn"
+Fermerbtn.Text = "X"
+Fermerbtn.Position = UDim2.new(0.94, 0, 0, 0)
+Fermerbtn.Size = UDim2.new(0, 28, 0, 29)
+Fermerbtn.BackgroundTransparency = 1
+Fermerbtn.TextColor3 = Color3.fromRGB(118, 118, 118)
+Fermerbtn.TextScaled = true
+Fermerbtn.Font = Enum.Font.SourceSansBold
+Fermerbtn.Parent = Container
+
+local EnterBox = Instance.new("Frame")
+EnterBox.Name = "EnterBox"
+EnterBox.Size = UDim2.new(0, 350, 0, 32)
+EnterBox.Position = UDim2.new(0.136, 0, 0.257, 0)
+EnterBox.BackgroundColor3 = Color3.fromRGB(39, 39, 39)
+EnterBox.Parent = Container
+applyUICorner(EnterBox, 8)
+applyUIStroke(EnterBox)
+
+local EnterKey = Instance.new("TextBox")
+EnterKey.Name = "EnterKey"
+EnterKey.Text = "Enter Key"
+EnterKey.Size = UDim2.new(0, 349, 0, 31)
+EnterKey.Position = UDim2.new(0.003, 0, 0, 0)
+EnterKey.BackgroundTransparency = 1
+EnterKey.TextColor3 = Color3.fromRGB(170, 170, 170)
+EnterKey.TextSize = 12
+EnterKey.Parent = EnterBox
+
+-- Boutons
+local Discord = Instance.new("Frame")
+Discord.Name = "Discord"
+Discord.Size = UDim2.new(0, 101, 0, 33)
+Discord.Position = UDim2.new(0.66, 0, 0.464, 0)
+Discord.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+Discord.Parent = Container
+applyUICorner(Discord, 8)
+applyUIStroke(Discord)
+
+local DiscordBTN = Instance.new("TextButton")
+DiscordBTN.Name = "DiscordBTN"
+DiscordBTN.Text = "Discord"
+DiscordBTN.Size = UDim2.new(0, 100, 0, 33)
+DiscordBTN.Position = UDim2.new(0.02, 0, 0, 0)
+DiscordBTN.BackgroundTransparency = 1
+DiscordBTN.TextColor3 = Color3.fromRGB(99, 99, 99)
+DiscordBTN.TextSize = 12
+DiscordBTN.Parent = Discord
+
+local GetKey = Instance.new("Frame")
+GetKey.Name = "GetKey"
+GetKey.Size = UDim2.new(0, 101, 0, 33)
+GetKey.Position = UDim2.new(0.136, 0, 0.464, 0)
+GetKey.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+GetKey.Parent = Container
+applyUICorner(GetKey, 8)
+applyUIStroke(GetKey)
+
+local GetKeyBTN = Instance.new("TextButton")
+GetKeyBTN.Name = "GetKeyBTN"
+GetKeyBTN.Text = "Get Key"
+GetKeyBTN.Size = UDim2.new(0, 100, 0, 33)
+GetKeyBTN.Position = UDim2.new(0.01, 0, 0, 0)
+GetKeyBTN.BackgroundTransparency = 1
+GetKeyBTN.TextColor3 = Color3.fromRGB(99, 99, 99)
+GetKeyBTN.TextSize = 12
+GetKeyBTN.Parent = GetKey
+
+local Validate = Instance.new("Frame")
+Validate.Name = "Validate"
+Validate.Size = UDim2.new(0, 101, 0, 33)
+Validate.Position = UDim2.new(0.399, 0, 0.464, 0)
+Validate.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+Validate.Parent = Container
+applyUICorner(Validate, 8)
+applyUIStroke(Validate)
+
+local ValidateBTN = Instance.new("TextButton")
+ValidateBTN.Name = "ValidateBTN"
+ValidateBTN.Text = "Validate"
+ValidateBTN.Size = UDim2.new(0, 100, 0, 33)
+ValidateBTN.Position = UDim2.new(0.01, 0, 0, 0)
+ValidateBTN.BackgroundTransparency = 1
+ValidateBTN.TextColor3 = Color3.fromRGB(99, 99, 99)
+ValidateBTN.TextSize = 12
+ValidateBTN.Parent = Validate
+
+-- Fermer le GUI
+Fermerbtn.MouseButton1Click:Connect(function()
+	screenGui:Destroy()
+end)
+
+-- Retourner les éléments dans une table
+return {
+	ValidateBTN = ValidateBTN,
+	GetBTN = GetKeyBTN,
+	EnterKey = EnterKey,
+	ErrorMessage = nil, -- Remplace par l'élément approprié si nécessaire
+	FacilityLibrary = nil -- Remplace par ton module de bibliothèque si nécessaire
+}
