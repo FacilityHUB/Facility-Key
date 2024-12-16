@@ -49,7 +49,6 @@ if savedKey then
 			Text = "Saved key Valid : " .. savedKey,
 			Icon = "rbxassetid://1234567890",
 		})
-		screenGui:Destroy()
 	else
 		print("Invalid saved key, please enter a new key.")
 		game:GetService("StarterGui"):SetCore("SendNotification", {
