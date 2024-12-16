@@ -166,6 +166,14 @@ ValidateBTN.TextColor3 = Color3.fromRGB(99, 99, 99)
 ValidateBTN.TextSize = 12
 ValidateBTN.Parent = Validate
 
+DiscordBTN.MouseButton1Click:Connect(function()
+    setclipboard("https://discord.gg/jTuXv2Kcsn")
+    game:GetService("StarterGui"):SetCore("SendNotification",{
+        Title = "Facility Key", 
+        Text = "Discord Link Copied", 
+        Icon = "rbxassetid://1234567890" 
+    })
+end)
 -- Fermer le GUI
 Fermerbtn.MouseButton1Click:Connect(function()
 	screenGui:Destroy()
@@ -183,9 +191,19 @@ ValidateBTN.MouseButton1Click:Connect(function()
 	local response = FacilityLibrary.validateDefaultKey(enteredKey)
 	if response == true then
 		print("Clé valide : " .. enteredKey)
+        game:GetService("StarterGui"):SetCore("SendNotification",{
+            Title = "Facility Key", 
+            Text = "Key Valide", 
+            Icon = "rbxassetid://1234567890" 
+        })
 		saveKey(enteredKey) -- Sauvegarder la clé validée
 	else
 		print("Clé invalide : " .. enteredKey)
+        game:GetService("StarterGui"):SetCore("SendNotification",{
+            Title = "Facility Key", 
+            Text = "Key Invalid", 
+            Icon = "rbxassetid://1234567890" 
+        })
 	end
 end)
 
