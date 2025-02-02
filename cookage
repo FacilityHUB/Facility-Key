@@ -1390,9 +1390,9 @@ function MacLib:Window(Settings)
 			local tabSwitcher = Instance.new("TextButton")
 			tabSwitcher.Name = "TabSwitcher"
 			tabSwitcher.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json")
-			tabSwitcher.Text = ""
+			tabSwitcher.Text = "coucou"
 			tabSwitcher.TextColor3 = Color3.fromRGB(0, 0, 0)
-			tabSwitcher.TextSize = 30
+			tabSwitcher.TextSize = 16
 			tabSwitcher.AutoButtonColor = false
 			tabSwitcher.AnchorPoint = Vector2.new(0.5, 0)
 			tabSwitcher.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -1400,7 +1400,7 @@ function MacLib:Window(Settings)
 			tabSwitcher.BorderColor3 = Color3.fromRGB(0, 0, 0)
 			tabSwitcher.BorderSizePixel = 0
 			tabSwitcher.Position = UDim2.fromScale(0.5, 0)
-			tabSwitcher.Size = UDim2.new(1, -15, 0, 20)
+			tabSwitcher.Size = UDim2.new(1, -21, 0, 30)
 
 			tabIndex += 1
 			tabSwitcher.LayoutOrder = tabIndex
