@@ -1449,7 +1449,7 @@ function MacLib:Window(Settings)
 			tabSwitcherName.Text = Settings.Name
 			tabSwitcherName.RichText = true
 			tabSwitcherName.TextColor3 = Color3.fromRGB(255, 255, 255)
-			tabSwitcherName.TextSize = 16
+			tabSwitcherName.TextSize = 5
 			tabSwitcherName.TextTransparency = 0.5
 			tabSwitcherName.TextTruncate = Enum.TextTruncate.SplitWord
 			tabSwitcherName.TextXAlignment = Enum.TextXAlignment.Left
